@@ -61,7 +61,6 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-image: url('file:///C:\Users\willy\Desktop\Rocket_Elevators_Customer_Portal\ClientPortal\ClientPortal\wwwroot\Pictures\3.jpg');
 }
 .footer {
   position: absolute;
