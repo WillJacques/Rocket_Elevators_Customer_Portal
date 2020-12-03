@@ -1,8 +1,7 @@
 {
   "dependencies": {
     "mssql1": {
-      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/clientportaldbserverwj/databases/ClientPortal_db",
-      "type": "mssql.azure",
+      "type": "mssql.onprem",
       "connectionId": "DefaultConnection",
       "secretStore": "AzureAppSettings"
     }
