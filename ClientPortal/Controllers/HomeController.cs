@@ -23,11 +23,6 @@ namespace ClientPortal.Controllers
         {
             return View();
         }
-        [Authorize]
-        public IActionResult Intervention()
-        {
-            return View();
-        }
 
         public IActionResult Privacy()
         {
