@@ -1,7 +1,81 @@
 ﻿@{
     ViewData["Title"] = "Product Management";
 }
+<head>
 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            jsonvalue1 = 'query{ customerInfo(email_company_contact:"@User.Identity.Name"){ buildings{ id, batteries{ id, columns{ id, elevators{ id, status, last_inspection_date } } } } } }';
+            console.log(jsonvalue1);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue1 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response.data.customerInfo.buildings);
+                    for (var i = 0; i < response.data.customerInfo.buildings.length; i++) {
+                        for (var j = 0; j < response.data.customerInfo.buildings[i].batteries.length; j++) {
+                            for (var k = 0; k < response.data.customerInfo.buildings[i].batteries[j].columns.length; k++) {
+                                for (var l = 0; l < response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators.length; l++) {
+                                    var statuses = ""
+                                    if (response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].status == "Active") {
+                                        statuses = '<span class="badge badge-success"> Active </span>'
+                                    }
+                                    else {
+                                        statuses = '<span class="badge badge-danger">' + response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].status + '</span>'
+                                    }
+                                    var button = '<a href="#" class="btn btn-warning btn-sm"><i class="fa fa-times black"></i> New Intervention </a>'
+                                    console.log(response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].id);
+                                    console.log(response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].status);
+                                    console.log(response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].last_inspection_date);
+                                    $("#Chartfill").append("<tr><td>" + response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].id + "</td><td>" + response.data.customerInfo.buildings[i].batteries[j].columns[k].id + "</td><td>" + response.data.customerInfo.buildings[i].batteries[j].id + "</td><td>" + response.data.customerInfo.buildings[i].id + "</td><td>" + statuses + "</td><td>" + response.data.customerInfo.buildings[i].batteries[j].columns[k].elevators[l].last_inspection_date.substring(0, 10) + "</td><td>" + button +"</td> </tr>");
+                                }
+                            }
+                        }
+                    }
+                    //var name = response["data"]["customerInfo"]["buildings"];
+                    //var quantity = name.count;
+                    //$("#test").html("total: "+quantity+" !");
+                    //console.log(name);
+                    //console.log(quantity);
+                }
+            });
+        });
+    </script>
+</head>
 <div class="text-center">
     <h1 class="display-4">Product Management Page</h1>
+</div>
+
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Elevator ID</th>
+                <th>Column ID</th>
+                <th>Battery ID</th>
+                <th>Building ID</th>
+                <th>Status</th>
+                <th>Last Inspection</th>
+                <th>Intervention</th>
+            </tr>
+        </thead>
+        <tbody id="Chartfill">
+            @*<tr>
+                <td>Value 1</td>
+                <td>Value 2</td>
+                <td>Value 3</td>
+                <td>Value 1</td>
+                <td>Value 2</td>
+                <td>Value 3</td>
+            </tr>*@
+        </tbody>
+    </table>
 </div>

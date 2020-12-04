@@ -23,13 +23,18 @@ namespace ClientPortal.Controllers
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult Products()
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult New()
+        {
+            return View();
+        }
+        [Authorize]
+        public IActionResult InterventionSent()
         {
             return View();
         }

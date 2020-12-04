@@ -1,7 +1,112 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<head>
 
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+            jsonvalue1 = 'query{IsCustomer(email_company_contact:"@User.Identity.Name"){full_name_company_contact}}';
+            console.log(jsonvalue1);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue1 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    var name = response["data"]["IsCustomer"][0]["full_name_company_contact"];
+                    $("#greetings").html("Welcome back "+name+" !");
+                    console.log(name);
+                }
+            });
+            jsonvalue2 = 'query{ customerElevators(email_company_contact:"@User.Identity.Name"){ elevators{ id, status } } }';
+            console.log(jsonvalue2);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue2 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    var name = response["data"]["customerElevators"]["elevators"];
+                    var elevatorquantity = name.length
+                    $("#elevatordeployed").html("You have " + elevatorquantity + " elevators deployed");
+                    console.log(elevatorquantity);
+                    var count = 0
+                    for (var i = 0; i < name.length; i++) {
+                        if (name[i]["status"] != "Active") {
+                            count = count + 1;
+                        }
+                    }
+                    $("#elevatorsstop").html("You have " + count + " elevators are not in running status and are being serviced");
+                    console.log(count);
+                }
+            });
+            jsonvalue3 = 'query{ customerBuilding(email_company_contact:"@User.Identity.Name"){ buildings{ id } } }';
+            console.log(jsonvalue3);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue3 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    var name = response["data"]["customerBuilding"]["buildings"];
+                    var buildingquantity = name.length
+                    $("#buildingtotal").html("You have " + buildingquantity + " buildings");
+                    console.log(buildingquantity);
+                }
+            });
+        });
+    </script>
+</head>
 <div class="text-center">
-    <h1 class="display-4">Welcome dear client !</h1>
+    <div class="display-4" id="greetings">Welcome dear client !</div>
 </div>
+@*<hr />
+<div id="elevatorsstop"></div>
+<hr />
+<div id="elevatordeployed"></div>
+<hr />
+<div id="buildingtotal"></div>
+<hr />
+<div id="interventions"></div>
+<hr />
+<div id="batteries"></div>*@
+
+<div class="btn-group">
+    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        New intervention
+    </button>
+    <div class="dropdown-menu">
+        <form class="px-4 py-3">
+            <div class="form-group">
+                <label for="exampleDropdownFormEmail1">Report</label>
+                <input type="email" style="width: 800px;" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
+            </div>
+            <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+@*
+    There are currently #{@elevatorcounttext} elevators deployed in your #{Building.count} buildings.
+    You currently have #{Quote.count} interventions awaiting processing.
+    #{Battery.count} batteries are deployed across #{diffcities} cities.",*@

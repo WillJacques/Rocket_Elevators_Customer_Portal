@@ -8,7 +8,19 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(document).ready(function () {
-            jsonvalue = 'query{customers{id,email_company_contact}}';
+            var customer = "@User.Identity.Name";
+            if (customer == '') {
+                $("#elevator_id").prop("hidden", true);
+                $("#column_id").prop("hidden", true);
+                $("#battery_id").prop("hidden", true);
+                $("#building_id").prop("hidden", true);
+            } else {
+                $("#building_id").prop("hidden", false);
+                $("#elevator_id").prop("hidden", true);
+                $("#column_id").prop("hidden", true);
+                $("#battery_id").prop("hidden", true);
+            }
+            jsonvalue = 'query{customerBuilding(email_company_contact:"@User.Identity.Name"){buildings{id,address_of_the_building}}}';
             console.log(jsonvalue);
             $.ajax({
                 url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
@@ -20,26 +32,42 @@
                 },
                 success: function (response) {
                     console.log(response);
-                    var customers = response["data"]["customers"];
-                    $("#customer_id").empty();
+                    var buildings = response["data"]["customerBuilding"]["buildings"];
+                    $("#building_id").empty();
 
-                    $("#customer_id").append('<option value="">--- Select Customer ---</option>');
-                    for (var i = 0; i < customers.length; i++) {
-                        $("#customer_id").append('<option value="' + customers[i]["id"] + '">' + customers[i]["email_company_contact"] + '</option>');
+                    $("#building_id").append('<option value="">--- Select Building ---</option>');
+                    for (var i = 0; i < buildings.length; i++) {
+                        $("#building_id").append('<option value="' + buildings[i]["id"] + '">' + buildings[i]["address_of_the_building"] + '</option>');
                     }
-
+                }
+            });
+            jsonvalue2 = 'query{customerIDByCustomerEmail(email_company_contact:"@User.Identity.Name"){id}}';
+            console.log(jsonvalue2);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue2 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    var author = response["data"]["customerIDByCustomerEmail"][0]["id"];
+                    $("#author").html(author);
                 }
             });
 
             $("#btnSayhello").click(function () {
 
-                const customer_id = $("#customer_id").val();
+                const customer_id = $("#author").html();
                 const building_id = $("#building_id").val();
                 const battery_id = $("#battery_id").val();
                 const column_id = $("#column_id").val();
                 const elevator_id = $("#elevator_id").val();
-                const employee_id = $("#employee_id").val();
-                const author = $("#author").val();
+                const employee_id = $("#employee_ide").html();
+                const author = $("#author").html();
+                console.log(author)
                 const report = $("#report").val();
                 jsonvalue = 'mutation{createIntervention(options: {customer_id:' + customer_id + ',building_id:' + building_id + ',battery_id:' + battery_id + ',column_id:' + column_id + ',elevator_id:' + elevator_id + ',employee_id:' + employee_id + ',author: ' + author + ',report:"' + report + '"})}';
                 console.log(jsonvalue);
@@ -53,7 +81,8 @@
                     data: JSON.stringify({ query: jsonvalue }),
                     success: function (result) {
                         console.log(JSON.stringify(result))
-                        $("#SayhelloDiv").html("<h1>" + result.data.createIntervention + " is true and it's great !</h1>");
+                        $("#SayhelloDiv").html("Intervention Sent !");
+                        //window.location.reload(true);
                     }
                 });
             });
@@ -76,13 +105,9 @@
     </div>
 
 </div>
-<form>
+<form action="https://clientportalwj.azurewebsites.net/Home/InterventionSent" method="POST">
     <div class="table-responsive p-20 fs-16">
         <table class="table table-bordered table-vertical-middle">
-            <tr>
-                <td>Customer Email:</td>
-                <td><select name="customer_id" id="customer_id"><option value="" selected="selected">--- Please wait ---</option></select></td>
-            </tr>
             <tr>
                 <td>Building Adress:</td>
                 <td><select name="building_id" id="building_id"><option value="" selected="selected">--- Please wait ---</option></select></td>
@@ -100,26 +125,24 @@
                 <td><select name="elevator_id" id="elevator_id"> <option value="" selected="selected">--- Please wait ---</option></select></td>
             </tr>
             <tr>
-                <td><label for="employee_id">Employee ID</label></td>
-                <td><input type="text" id="employee_id"></td>
+                <td><label for="employee_id">Employee Name</label></td>
+                <td id="employee_id"></td>
             </tr>
             <tr>
                 <td><label for="report">Report</label></td>
                 <td><input type="text" id="report" /></td>
             </tr>
             <tr>
-                <td>Author ID</td>
-                <td><input type="text" id="author" /></td>
-            </tr>
-            <tr>
-                <td>true</td>
+                <td>Intervention Status</td>
                 <td id="SayhelloDiv"> </td>
             </tr>
 
         </table>
+        <div id="employee_ide" style="display:none"></div>
+        <div id="author" style="display:none"></div>
     </div>
 </form>
-<button id="btnSayhello">SayHello</button>
+<button onclick="window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent';" id="btnSayhello">Send intervention</button>
 
 <script>
     $("#building_id").prop("hidden", true); // second dropdown is disable while first dropdown is empty
@@ -205,13 +228,13 @@
             $("#elevator_id").prop("hidden", true);
             $("#column_id").prop("hidden", false);
         }
-        jsonvalue = 'query{columnsByBatteryID(batteryID:' + battery + '){id}}';
-        console.log(jsonvalue);
+        jsonvalue1 = 'query{columnsByBatteryID(batteryID:' + battery + '){id}}';
+        console.log(jsonvalue1);
         $.ajax({
             url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
             type: "POST",
             contentType: "application/json",
-            data: JSON.stringify({ query: jsonvalue }),
+            data: JSON.stringify({ query: jsonvalue1 }),
             error: function (xhr, status, error) {
                 console.error('AJAX Error: ' + status + error);
             },
@@ -224,6 +247,26 @@
                 for (var i = 0; i < columns.length; i++) {
                     $("#column_id").append('<option value="' + columns[i]["id"] + '">' + columns[i]["id"] + '</option>');
                 }
+            }
+        });
+        jsonvalue2 = 'query{ batteryInfos(id: ' + battery + '){ employee{id, first_name, last_name } } }';
+        console.log(jsonvalue2);
+        $.ajax({
+            url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ query: jsonvalue2 }),
+            error: function (xhr, status, error) {
+                console.error('AJAX Error: ' + status + error);
+            },
+            success: function (response) {
+                console.log(response);
+                var firstname = response["data"]["batteryInfos"]["employee"]["first_name"];
+                var lastname = response["data"]["batteryInfos"]["employee"]["last_name"];
+                var emp_id = response["data"]["batteryInfos"]["employee"]["id"];
+                console.log(emp_id);
+                $("#employee_id").html(firstname + " " + lastname);
+                $("#employee_ide").html(emp_id);
             }
         });
     });
