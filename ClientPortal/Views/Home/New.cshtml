@@ -81,7 +81,6 @@
                     data: JSON.stringify({ query: jsonvalue }),
                     success: function (result) {
                         console.log(JSON.stringify(result))
-                        $("#SayhelloDiv").html("Intervention Sent !");
                         //window.location.reload(true);
                     }
                 });
@@ -131,10 +130,6 @@
             <tr>
                 <td><label for="report">Report</label></td>
                 <td><input type="text" id="report" /></td>
-            </tr>
-            <tr>
-                <td>Intervention Status</td>
-                <td id="SayhelloDiv"> </td>
             </tr>
 
         </table>

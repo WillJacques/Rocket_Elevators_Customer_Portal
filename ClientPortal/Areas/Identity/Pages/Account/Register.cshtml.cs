@@ -73,63 +73,23 @@ namespace ClientPortal.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-        //public async Task<string> CheckIfCustomerCanRegister(string email)
-        //{
-            //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://graphql-wj.herokuapp.com/graphql");
-            //httpWebRequest.ContentType = "application/json";
-            //httpWebRequest.Method = "POST";
+        public async Task<string> CheckIfCustomerCanRegister(string email)
+        {
+        var client = new GraphQLHttpClient("https://graphql-wj.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
+        var remail = "\"" + email + "\"";
+        var request = new GraphQLRequest
+        {
+            Query = "query{customerInfo(email_company_contact:" + remail + "){email_company_contact}}"
+        };
+        var response = await client.SendQueryAsync<Owner>(request);
+        Console.WriteLine("----------");
+        Console.WriteLine(response.Data);
+        Console.WriteLine("----------");
+        var responses = "Hello";
+        return responses;
+        }
 
-            //using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            //{
-            //    string json = "query{IsCustomer(email_company_contact: \"" + email + "\"){email_company_contact}}";
-            //    Console.WriteLine(json);
-
-            //    streamWriter.Write(json);
-            //}
-
-            //var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            //using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-            //{
-            //    var result = streamReader.ReadToEnd();
-            //    Console.WriteLine(result);
-            //}
-            //return true;
-
-
-
-
-            //var remail = email;
-            //var query = @"query{IsCustomer(email_company_contact:" + remail + "){email_company_contact}}";
-            //var request = new GraphQLRequest()
-            //{
-            //    Query = query,
-            //};
-
-            //var graphQLClient = new GraphQLClient("http://localhost:8080/api/GraphQL");
-
-            //graphQLClient.DefaultRequestHeaders.Add("Authorization", "yourtoken");
-
-            //var graphQLResponse = await graphQLClient.PostAsync(request);
-
-            //Console.WriteLine(graphQLResponse.Data);
-
-
-
-            //var client = new GraphQLHttpClient("https://graphql-wj.herokuapp.com/graphql", new NewtonsoftJsonSerializer());
-            //var remail = "\""+email+"\"";
-            //var request = new GraphQLRequest
-            //{
-            //    Query = "query{IsCustomer(email_company_contact:" + remail + "){email_company_contact}}"
-            //};
-            //var query = "query{IsCustomer(email_company_contact:" + remail + "){email_company_contact}}";
-            //Console.WriteLine(query);
-            //var response = await client.SendQueryAsync <Owner> (request);
-            //Console.WriteLine(response.Data.email_company_contact);
-            //var responses = "Hello";
-            //return responses;
-        //}
-
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+    public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

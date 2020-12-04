@@ -23,6 +23,7 @@
                     var name = response["data"]["IsCustomer"][0]["full_name_company_contact"];
                     $("#greetings").html("Welcome back "+name+" !");
                     console.log(name);
+                    document.getElementById("waiting").style.display = "none";
                 }
             });
             jsonvalue2 = 'query{ customerElevators(email_company_contact:"@User.Identity.Name"){ elevators{ id, status } } }';
@@ -47,7 +48,7 @@
                             count = count + 1;
                         }
                     }
-                    $("#elevatorsstop").html("You have " + count + " elevators are not in running status and are being serviced");
+                    $("#elevatorsstop").html("You have " + count + " elevators that are not in running status and are being serviced");
                     console.log(count);
                 }
             });
@@ -74,8 +75,9 @@
 </head>
 <div class="text-center">
     <div class="display-4" id="greetings">Welcome dear client !</div>
+    <h3 class="fw-600" id="waiting"><span>Loading Messages...</span></h3>
 </div>
-@*<hr />
+<hr />
 <div id="elevatorsstop"></div>
 <hr />
 <div id="elevatordeployed"></div>
@@ -84,22 +86,7 @@
 <hr />
 <div id="interventions"></div>
 <hr />
-<div id="batteries"></div>*@
-
-<div class="btn-group">
-    <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        New intervention
-    </button>
-    <div class="dropdown-menu">
-        <form class="px-4 py-3">
-            <div class="form-group">
-                <label for="exampleDropdownFormEmail1">Report</label>
-                <input type="email" style="width: 800px;" class="form-control" id="exampleDropdownFormEmail1" placeholder="email@example.com">
-            </div>
-            <button type="submit" class="btn btn-primary">Send</button>
-        </form>
-    </div>
-</div>
+<div id="batteries"></div>
 
 
 

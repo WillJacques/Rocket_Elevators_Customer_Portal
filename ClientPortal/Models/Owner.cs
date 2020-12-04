@@ -3,8 +3,15 @@ using System.Collections.Generic;
 
 namespace ClientPortal.Models
 {
+    public enum TypeOfAccount
+    {
+        Cash,
+        Savings,
+        Expense,
+        Income
+    }
     public class Owner
     {
-        public string email_company_contact { get; set; }
+        public string customerInfo { get; set; }
     }
 }

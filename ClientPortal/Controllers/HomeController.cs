@@ -38,6 +38,10 @@ namespace ClientPortal.Controllers
         {
             return View();
         }
+        public IActionResult NewInter()
+        {
+            return View();
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

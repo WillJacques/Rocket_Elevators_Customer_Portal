@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Intervention";
+}
+
+<head>
+
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var elev_id = window.location.pathname.slice(15);
+            var customer = "@User.Identity.Name"; 
+            jsonvalue = 'query{ elevatorsByID(id:' + elev_id +'){ id, column{ id, battery{ employee{ id, first_name, last_name } id, building{ id, customer{ email_company_contact, id } } } } } }';
+            console.log(jsonvalue);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    document.getElementById("waiting").style.display = "none";
+                    $("waiting").hide();
+                    $("#building_id").html(response.data.elevatorsByID[0].column.battery.building.id);
+                    $("#battery_id").html(response.data.elevatorsByID[0].column.battery.id);
+                    $("#column_id").html(response.data.elevatorsByID[0].column.id);
+                    $("#elevator_id").html(response.data.elevatorsByID[0].id);
+                    $("#employee_id").html(response.data.elevatorsByID[0].column.battery.employee.first_name + " " + response.data.elevatorsByID[0].column.battery.employee.last_name);
+                    $("#employee_ide").html(response.data.elevatorsByID[0].column.battery.employee.id);
+                    $("#author").html(response.data.elevatorsByID[0].column.battery.building.customer.id);
+                    document.getElementById("waiting").style.display = "none";
+                }
+            });
+
+            $("#btnSayhello").click(function () {
+
+                const customer_id = $("#author").html();
+                const building_id = $("#building_id").html();
+                const battery_id = $("#battery_id").html();
+                const column_id = $("#column_id").html();
+                const elevator_id = $("#elevator_id").html();
+                const employee_id = $("#employee_ide").html();
+                const author = $("#author").html();
+                const report = $("#report").val();
+                jsonvalue = 'mutation{createIntervention(options: {customer_id:' + customer_id + ',building_id:' + building_id + ',battery_id:' + battery_id + ',column_id:' + column_id + ',elevator_id:' + elevator_id + ',employee_id:' + employee_id + ',author: ' + author + ',report:"' + report + '"})}';
+                console.log(jsonvalue);
+                $("#SayhelloDiv").html('loading....');
+
+
+                $.ajax({
+                    url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                    contentType: "application/json",
+                    type: 'POST',
+                    data: JSON.stringify({ query: jsonvalue }),
+                    success: function (result) {
+                        console.log(JSON.stringify(result))
+                        //window.location.reload(true);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<div class="container text-center">
+
+    <div class="container text-center">
+
+        <p></p>
+
+        <h3 class="fw-600"><span>NEW INTERVENTION FORM</span></h3>
+
+        <p>Please fill the report section.</p>
+
+        <h3 class="fw-600" id="waiting"><span>UPDATING DATABASE...</span></h3>
+
+        <hr>
+
+    </div>
+
+</div>
+<form action="https://clientportalwj.azurewebsites.net/Home/InterventionSent" method="POST">
+    <div class="table-responsive p-20 fs-16">
+        <table class="table table-bordered table-vertical-middle">
+            <tr>
+                <td>Building ID:</td>
+                <td id="building_id"></td>
+            </tr>
+            <tr>
+                <td>Battery ID:</td>
+                <td id="battery_id"></td>
+            </tr>
+            <tr>
+                <td>Column ID:</td>
+                <td id="column_id"></td>
+            </tr>
+            <tr>
+                <td>Elevator ID:</td>
+                <td id="elevator_id"></td>
+            </tr>
+            <tr>
+                <td>Employee Name</td>
+                <td id="employee_id"></td>
+            </tr>
+            <tr>
+                <td><label for="report">Report</label></td>
+                <td><input type="text" id="report" style="width: 400px;"/></td>
+            </tr>
+
+        </table>
+        <div id="employee_ide" style="display:none"></div>
+        <div id="author" style="display:none"></div>
+    </div>
+</form>
+<button onclick="window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent';" id="btnSayhello">Send intervention</button>
