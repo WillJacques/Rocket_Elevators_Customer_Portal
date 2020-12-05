@@ -41,12 +41,54 @@
                         }
                     }
                     document.getElementById("waiting").style.display = "none";
-                    //var name = response["data"]["customerInfo"]["buildings"];
-                    //var quantity = name.count;
-                    //$("#test").html("total: "+quantity+" !");
-                    //console.log(name);
-                    //console.log(quantity);
                 }
+            });
+
+            jsonvalue2 = 'query{customerInfo(email_company_contact:"@User.Identity.Name"){technical_manager_email,technical_authority_phone,company_description,company_name,company_headquarter_address,full_name_company_contact,company_contact_phone}}';
+            console.log(jsonvalue2);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue2 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    document.getElementById("waiting").style.display = "none";
+                    document.getElementById("technical_manager_email").value = response.data.customerInfo.technical_manager_email;
+                    document.getElementById("technical_authority_phone").value = response.data.customerInfo.technical_authority_phone;
+                    document.getElementById("company_description").value = response.data.customerInfo.company_description;
+                    document.getElementById("company_name").value = response.data.customerInfo.company_name;
+                    document.getElementById("company_headquarter_address").value = response.data.customerInfo.company_headquarter_address;
+                    document.getElementById("full_name_company_contact").value = response.data.customerInfo.full_name_company_contact;
+                    document.getElementById("company_contact_phone").value = response.data.customerInfo.company_contact_phone;
+                }
+            });
+
+            $("#btnSayhello").click(function () {
+
+                const technical_manager_email = $("#technical_manager_email").val();
+                const technical_authority_phone = $("#technical_authority_phone").val();
+                const company_description = $("#company_description").val();
+                const company_name = $("#company_name").val();
+                const company_headquarter_address = $("#company_headquarter_address").val();
+                const full_name_company_contact = $("#full_name_company_contact").val();
+                const company_contact_phone = $("#company_contact_phone").val();
+
+                jsonvalue3 = 'mutation{updateCustomer(email_company_contact:"@User.Identity.Name",input: {technical_manager_email:"' + technical_manager_email + '",technical_authority_phone:"' + technical_authority_phone + '",company_description:"' + company_description + '",company_name:"' + company_name + '",company_headquarter_address:"' + company_headquarter_address + '",full_name_company_contact:"' + full_name_company_contact + '",company_contact_phone:"' + company_contact_phone + '"})}';
+                console.log(jsonvalue3);
+                $.ajax({
+                    url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                    contentType: "application/json",
+                    type: 'POST',
+                    data: JSON.stringify({ query: jsonvalue3 }),
+                    success: function (result) {
+                        console.log(JSON.stringify(result))
+                        //window.location.reload(true);
+                    }
+                });
             });
         });
     </script>
@@ -70,14 +112,56 @@
             </tr>
         </thead>
         <tbody id="Chartfill">
-            @*<tr>
-                <td>Value 1</td>
-                <td>Value 2</td>
-                <td>Value 3</td>
-                <td>Value 1</td>
-                <td>Value 2</td>
-                <td>Value 3</td>
-            </tr>*@
         </tbody>
     </table>
 </div>
+<div class="text-center">
+    <h1 class="display-4">Customer info modifications</h1>
+</div>
+<form class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Customer Infos</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Technical Manager Email:</td>
+                <td><input type="text" id="technical_manager_email" /></td>
+            </tr>
+            <tr>
+                <td>Technical Authority Phone:</td>
+                <td><input type="text" id="technical_authority_phone" /></td>
+            </tr>
+            <tr>
+                <td>Company Description:</td>
+                <td><input type="text" id="company_description" /></td>
+            </tr>
+            <tr>
+                <td>Company Name:</td>
+                <td><input type="text" id="company_name" /></td>
+            </tr>
+            <tr>
+                <td>Company Headquarter Address:</td>
+                <td><input type="text" id="company_headquarter_address" /></td>
+            </tr>
+            <tr>
+                <td>Full Name Company Contact:</td>
+                <td><input type="text" id="full_name_company_contact" /></td>
+            </tr>
+            <tr>
+                <td>Company Contact Phone:</td>
+                <td><input type="text" id="company_contact_phone" /></td>
+            </tr>
+        </tbody>
+    </table>
+</form>
+<div class="text-center">
+    <button onclick="window.location.href = 'https://clientportalwj.azurewebsites.net/Home/ModificationSent';" id="btnSayhello" class="btn btn-primary btn-sm">Update my infos</button>
+
+</div>
+
+
+

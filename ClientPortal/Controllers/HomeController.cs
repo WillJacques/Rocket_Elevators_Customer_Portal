@@ -38,6 +38,10 @@ namespace ClientPortal.Controllers
         {
             return View();
         }
+        public IActionResult ModificationSent()
+        {
+            return View();
+        }
         public IActionResult NewInter()
         {
             return View();
