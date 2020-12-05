@@ -81,6 +81,7 @@
                     data: JSON.stringify({ query: jsonvalue }),
                     success: function (result) {
                         console.log(JSON.stringify(result))
+                        window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent'
                         //window.location.reload(true);
                     }
                 });
@@ -104,7 +105,7 @@
     </div>
 
 </div>
-<form action="https://clientportalwj.azurewebsites.net/Home/InterventionSent" method="POST">
+<form>
     <div class="table-responsive p-20 fs-16">
         <table class="table table-bordered table-vertical-middle">
             <tr>
@@ -138,7 +139,7 @@
     </div>
 </form>
 <div class="text-center">
-    <button onclick="window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent';" id="btnSayhello" class="btn btn-primary btn-sm">Send intervention</button>
+    <button id="btnSayhello" class="btn btn-primary btn-sm">Send intervention</button>
 </div>
 <script>
     $("#building_id").prop("hidden", true); // second dropdown is disable while first dropdown is empty

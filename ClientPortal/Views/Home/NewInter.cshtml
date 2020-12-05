@@ -57,6 +57,7 @@
                     data: JSON.stringify({ query: jsonvalue }),
                     success: function (result) {
                         console.log(JSON.stringify(result))
+                        window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent'
                         //window.location.reload(true);
                     }
                 });
@@ -116,5 +117,5 @@
     </div>
 </form>
 <div class="text-center">
-    <button id="btnSayhello" onclick="window.location.href = 'https://clientportalwj.azurewebsites.net/Home/InterventionSent';"  class="btn btn-primary btn-sm">Send intervention</button>
+    <button id="btnSayhello" class="btn btn-primary btn-sm">Send intervention</button>
 </div>
