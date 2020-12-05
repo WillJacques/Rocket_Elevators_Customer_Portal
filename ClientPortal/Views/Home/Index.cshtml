@@ -70,6 +70,60 @@
                     console.log(buildingquantity);
                 }
             });
+            jsonvalue4 = 'query{customerInfo(email_company_contact:"@User.Identity.Name"){id,interventions{status}}}';
+            console.log(jsonvalue4);
+            $.ajax({
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({ query: jsonvalue4 }),
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error: ' + status + error);
+                },
+                success: function (response) {
+                    console.log(response);
+                    var name = response["data"]["customerInfo"]["interventions"];
+                    var interquantity = name.length
+                    $("#interventions").html("You have a total of " + interquantity + " interventions:");
+                    console.log(interquantity);
+                    console.log("----");
+                    console.log(name.status);
+                    console.log("----");
+                    var InProgress = 0
+                    var Pending = 0
+                    var Interrupted = 0
+                    var Incomplete = 0
+                    var Complete = 0
+                    var Other = 0
+                    for (var i = 0; i < interquantity; i++) {
+                        if (name[i].status == "InProgress") {
+                            InProgress = InProgress + 1
+                        }
+                        else if (name[i].status == "Pending") {
+                            Pending = Pending + 1
+                        }
+                        else if (name[i].status == "Interrupted") {
+                            Interrupted = Interrupted + 1
+                        }
+                        else if (name[i].status == "Incomplete") {
+                            Incomplete = Incomplete + 1
+                        }
+                        else if (name[i].status == "Complete") {
+                            Complete = Complete + 1
+                        }
+                        else {
+                            Other = Other + 1
+                        }
+                    }
+                    $("#InProgress").html(InProgress);
+                    $("#Pending").html(Pending);
+                    $("#Interrupted").html(Interrupted);
+                    $("#Complete").html(Complete);
+                    $("#Incomplete").html(Incomplete);
+                    $("#Other").html(Other);
+
+                }
+            });
         });
     </script>
 </head>
@@ -77,6 +131,7 @@
     <div class="display-4" id="greetings">Welcome dear client !</div>
     <h3 class="fw-600" id="waiting"><span>Loading Messages...</span></h3>
 </div>
+<br />
 <hr />
 <div id="elevatorsstop"></div>
 <hr />
@@ -85,8 +140,42 @@
 <div id="buildingtotal"></div>
 <hr />
 <div id="interventions"></div>
-<hr />
-<div id="batteries"></div>
+<br />
+<form action="https://clientportalwj.azurewebsites.net/Home/InterventionSent" method="POST">
+    <div class="table-responsive p-20 fs-16">
+        <table class="table table-bordered table-vertical-middle">
+            <tr>
+                <th>Status</th>
+                <th>Quantity</th>
+            </tr>
+            <tr>
+                <td>InProgress:</td>
+                <td id="InProgress"></td>
+            </tr>
+            <tr>
+                <td>Pending:</td>
+                <td id="Pending"></td>
+            </tr>
+            <tr>
+                <td>Interrupted:</td>
+                <td id="Interrupted"></td>
+            </tr>
+            <tr>
+                <td>Complete</td>
+                <td id="Complete"></td>
+            </tr>
+            <tr>
+                <td>Incomplete</td>
+                <td id="Incomplete"></td>
+            </tr>
+            <tr>
+                <td>Other</td>
+                <td id="Other"></td>
+            </tr>
+
+        </table>
+    </div>
+</form>
 
 
 
