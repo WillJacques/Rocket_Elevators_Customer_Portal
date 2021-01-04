@@ -11,9 +11,8 @@
             jsonvalue1 = 'query{IsCustomer(email_company_contact:"@User.Identity.Name"){full_name_company_contact}}';
             console.log(jsonvalue1);
             $.ajax({
-                url: "https://graphql-wj.herokuapp.com/graphql",
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue1 }),
                 error: function (xhr, status, error) {
@@ -30,9 +29,8 @@
             jsonvalue2 = 'query{ customerElevators(email_company_contact:"@User.Identity.Name"){ elevators{ id, status } } }';
             console.log(jsonvalue2);
             $.ajax({
-                url: "https://graphql-wj.herokuapp.com/graphql",
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue2 }),
                 error: function (xhr, status, error) {
@@ -57,9 +55,8 @@
             jsonvalue3 = 'query{ customerBuilding(email_company_contact:"@User.Identity.Name"){ buildings{ id } } }';
             console.log(jsonvalue3);
             $.ajax({
-                url: "https://graphql-wj.herokuapp.com/graphql",
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue3 }),
                 error: function (xhr, status, error) {
@@ -76,9 +73,8 @@
             jsonvalue4 = 'query{customerInfo(email_company_contact:"@User.Identity.Name"){id,interventions{status}}}';
             console.log(jsonvalue4);
             $.ajax({
-                url: "https://graphql-wj.herokuapp.com/graphql",
+                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue4 }),
                 error: function (xhr, status, error) {
