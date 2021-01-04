@@ -13,7 +13,7 @@
             $.ajax({
                 url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: 'Access-Control-Allow-Origin: *',
+                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue1 }),
                 error: function (xhr, status, error) {
@@ -32,7 +32,7 @@
             $.ajax({
                 url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: 'Access-Control-Allow-Origin: *',
+                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue2 }),
                 error: function (xhr, status, error) {
@@ -59,7 +59,7 @@
             $.ajax({
                 url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: 'Access-Control-Allow-Origin: *',
+                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue3 }),
                 error: function (xhr, status, error) {
@@ -78,7 +78,7 @@
             $.ajax({
                 url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
-                headers: 'Access-Control-Allow-Origin: *',
+                headers: {  'Access-Control-Allow-Origin': '*' },
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue4 }),
                 error: function (xhr, status, error) {
