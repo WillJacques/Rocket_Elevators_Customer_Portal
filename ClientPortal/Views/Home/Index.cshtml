@@ -13,6 +13,7 @@
             $.ajax({
                 url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
+                header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue1 }),
                 error: function (xhr, status, error) {
@@ -31,6 +32,7 @@
             $.ajax({
                 url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
+                header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue2 }),
                 error: function (xhr, status, error) {
@@ -57,6 +59,7 @@
             $.ajax({
                 url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
+                header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue3 }),
                 error: function (xhr, status, error) {
@@ -75,6 +78,7 @@
             $.ajax({
                 url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
+                header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
                 data: JSON.stringify({ query: jsonvalue4 }),
                 error: function (xhr, status, error) {
