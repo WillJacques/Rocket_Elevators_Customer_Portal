@@ -11,7 +11,7 @@
             jsonvalue1 = 'query{IsCustomer(email_company_contact:"@User.Identity.Name"){full_name_company_contact}}';
             console.log(jsonvalue1);
             $.ajax({
-                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
                 header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
@@ -30,7 +30,7 @@
             jsonvalue2 = 'query{ customerElevators(email_company_contact:"@User.Identity.Name"){ elevators{ id, status } } }';
             console.log(jsonvalue2);
             $.ajax({
-                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
                 header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
@@ -57,7 +57,7 @@
             jsonvalue3 = 'query{ customerBuilding(email_company_contact:"@User.Identity.Name"){ buildings{ id } } }';
             console.log(jsonvalue3);
             $.ajax({
-                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
                 header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
@@ -76,7 +76,7 @@
             jsonvalue4 = 'query{customerInfo(email_company_contact:"@User.Identity.Name"){id,interventions{status}}}';
             console.log(jsonvalue4);
             $.ajax({
-                url: "https://cors-anywhere.herokuapp.com/https://graphql-wj.herokuapp.com/graphql",
+                url: "https://graphql-wj.herokuapp.com/graphql",
                 type: "POST",
                 header: "Access-Control-Allow-Origin: *",
                 contentType: "application/json",
